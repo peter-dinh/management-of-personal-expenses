@@ -43,7 +43,7 @@ class tai_khoan_quan_ly(models.Model):
     @api.multi
     def _get_so_du_tai_khoan(self):
         for rec in self:
-            list_record = rec.env['app_demo.danh_sach_chi_tieu'].search([('id_tai_khoan', '=', rec.id)])
+            list_record = rec.env['app_demo.danh_sach_thu_chi'].search([('id_tai_khoan', '=', rec.id)])
             list_record_vay_no = rec.env['app_demo.danh_sach_cac_khoan_vay'].search([('id_tai_khoan', '=', rec.id)])
             
             total = 0
@@ -101,8 +101,8 @@ class danh_sach_cac_khoan_vay(models.Model):
         
 
     
-class danh_sach_chi_tieu(models.Model):
-    _name = 'app_demo.danh_sach_chi_tieu'
+class danh_sach_thu_chi(models.Model):
+    _name = 'app_demo.danh_sach_thu_chi'
     _rec_name = 'nguyen_nhan'
     _description = 'cac khoa chi tieu ca nhan'
     _order = 'ngay_thuc_hien DESC'
