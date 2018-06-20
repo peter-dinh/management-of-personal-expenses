@@ -1,0 +1,136 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="app_demo.list">
+      <field name="name">app_demo list</field>
+      <field name="model">app_demo.app_demo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="app_demo.action_window">
+      <field name="name">app_demo window</field>
+      <field name="res_model">app_demo.app_demo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="app_demo.action_server">
+      <field name="name">app_demo server</field>
+      <field name="model_id" ref="model_app_demo_app_demo"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="app_demo" id="app_demo.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="app_demo.menu_1" parent="app_demo.menu_root"/>
+    <menuitem name="Menu 2" id="app_demo.menu_2" parent="app_demo.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="app_demo.menu_1_list" parent="app_demo.menu_1"
+              action="app_demo.action_window"/>
+    <menuitem name="Server to list" id="app_demo" parent="app_demo.menu_2"
+              action="app_demo.action_server"/>
+    -->
+
+    <record model="ir.ui.view" id="app_demo.list_danhsach">
+      <field name="name">app_demo list</field>
+      <field name="model">app_demo.danh_sach_hinh_thuc</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="ten_hinh_thuc"/>
+          <field name="loai_hinh_thuc"/>
+
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="app_demo.list">
+      <field name="name">app_demo list</field>
+      <field name="model">app_demo.tai_khoan_quan_ly</field>
+      <field name="arch" type="xml">
+        <tree>
+          
+          <field name="user_id"/>
+          <field name="so_du_tai_khoan"/>
+        </tree>
+      </field>
+    </record>
+
+    
+    <record model="ir.actions.act_window" id="app_demo.action_window">
+      <field name="name">Quản lý tài khoản</field>
+      <field name="res_model">app_demo.tai_khoan_quan_ly</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <!-- <record model="ir.ui.view" id="view_thu_chi">
+      <field name="name">app_demo list_thu chi</field>
+      <field name="model">app_demo.danh_sach_chi_tieu</field>
+      <field name="arch" type="xml">
+        <tree>
+          <filed name="id_tai_khoan"/>
+          <field name="so_tien"/>
+          <field name="hinh_thuc"/>
+        </tree>        
+      </field>
+    </record> -->
+
+    <record model="ir.ui.view" id="app_demo.danh_sach_chi_tieu">
+      <field name="name">app_demo list</field>
+      <field name="model">app_demo.danh_sach_chi_tieu</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="id_tai_khoan"/>
+          <field name="so_tien"/>
+          <field name="hinh_thuc"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="app_demo.action_window_thu_chi">
+      <field name="name">Quán lý thu chi</field>
+      <field name="res_model">app_demo.danh_sach_chi_tieu</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="app_demo.action_window_no">
+      <field name="name">Quản lý nợ</field>
+      <field name="res_model">app_demo.danh_sach_cac_khoan_vay</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem name="app_demo" id="app_demo.menu_root" />
+    
+    <menuitem name="Tai khoan" id="app_demo.menu_1" parent="app_demo.menu_root" action="app_demo.action_window"/>
+    <menuitem name="Thu chi" id="app_demo.thu_chi" parent="app_demo.menu_root" action="app_demo.action_window_thu_chi"/>
+    <menuitem name="No" id="app_demo.no" parent="app_demo.menu_root" action="app_demo.action_window_no"/>
+    
+   
+  </data>
+</odoo>
