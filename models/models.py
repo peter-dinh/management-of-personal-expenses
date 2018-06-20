@@ -30,10 +30,10 @@ class tai_khoan_quan_ly(models.Model):
 
     user_id = fields.Many2one('res.users', string='Người thực hiện', default=lambda self: self.env.user)
     so_du_tai_khoan = fields.Float(string='Số dư', compute="_get_so_du_tai_khoan")
-    so_khoan_thu = fields.Integer(string='Số khoản thu', store=False, compute='get_khoan_thu')
-    so_khoan_chi = fields.Integer(string='Số khoản chi', store=False, compute='get_khoan_chi')
-    so_khoan_no = fields.Integer(string='Số khoản nợ', store=False, compute="_get_khoan_no")
-    so_khoan_cho_no = fields.Integer(string='Số khoản cho nợ', store=False, compute='get_khoan_cho_no')
+    so_khoan_thu = fields.Integer(string='Số khoản thu', store=False,readonly=True)
+    so_khoan_chi = fields.Integer(string='Số khoản chi', store=False, readonly=True)
+    so_khoan_no = fields.Integer(string='Số khoản nợ', store=False, readonly=True)
+    so_khoan_cho_no = fields.Integer(string='Số khoản cho nợ', store=False, readonly=True)
 
     _sql_constraints = [
         ('user_id_unique', 'unique (user_id)', "Người dùng đã tồn tại !")
@@ -68,7 +68,7 @@ class tai_khoan_quan_ly(models.Model):
                     count_cho_vay = count_cho_vay + 1
                     if data.da_tra == False:
                         total = total + data.so_tien
-                        
+
             rec.so_du_tai_khoan = total
             rec.so_khoan_chi = count_chi
             rec.so_khoan_thu = count_thu
