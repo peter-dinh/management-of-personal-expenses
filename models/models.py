@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 
 class danh_sach_hinh_thuc(models.Model):
-    _name = 'app_demo.danh_sach_hinh_thuc'
+    _name = 'expenditure.danh_sach_hinh_thuc'
     _rec_name = 'mota'
 
     ten_hinh_thuc = fields.Char('Tên hình thức', required=True)
@@ -25,7 +25,7 @@ class danh_sach_hinh_thuc(models.Model):
                 rec.mota = str(rec.ten_hinh_thuc) + ' - Nope'
 
 class tai_khoan_quan_ly(models.Model):
-    _name = 'app_demo.tai_khoan_quan_ly'
+    _name = 'expenditure.tai_khoan_quan_ly'
     _rec_name = 'user_id'
 
     user_id = fields.Many2one('res.users', string='Người thực hiện', default=lambda self: self.env.user)
@@ -43,8 +43,8 @@ class tai_khoan_quan_ly(models.Model):
     @api.multi
     def _get_so_du_tai_khoan(self):
         for rec in self:
-            list_record = rec.env['app_demo.danh_sach_thu_chi'].search([('id_tai_khoan', '=', rec.id)])
-            list_record_vay_no = rec.env['app_demo.danh_sach_cac_khoan_vay'].search([('id_tai_khoan', '=', rec.id)])
+            list_record = rec.env['expenditure.danh_sach_thu_chi'].search([('id_tai_khoan', '=', rec.id)])
+            list_record_vay_no = rec.env['expenditure.danh_sach_cac_khoan_vay'].search([('id_tai_khoan', '=', rec.id)])
             
             total = 0
             count_thu = 0
@@ -77,11 +77,11 @@ class tai_khoan_quan_ly(models.Model):
 
 
 class danh_sach_cac_khoan_vay(models.Model):
-    _name = 'app_demo.danh_sach_cac_khoan_vay'
+    _name = 'expenditure.danh_sach_cac_khoan_vay'
     _rec_name = 'id_tai_khoan'
     _order = 'ngay_thuc_hien DESC'
 
-    id_tai_khoan = fields.Many2one('app_demo.tai_khoan_quan_ly', string='Tài khoản' )
+    id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', string='Tài khoản' )
     so_tien = fields.Float('Số tiền')
     ngay_thuc_hien = fields.Datetime('Ngày thực hiện')
     doi_tac = fields.Char(string='Đối tác')
@@ -102,15 +102,15 @@ class danh_sach_cac_khoan_vay(models.Model):
 
     
 class danh_sach_thu_chi(models.Model):
-    _name = 'app_demo.danh_sach_thu_chi'
+    _name = 'expenditure.danh_sach_thu_chi'
     _rec_name = 'nguyen_nhan'
     _description = 'cac khoa chi tieu ca nhan'
     _order = 'ngay_thuc_hien DESC'
 
-    id_tai_khoan = fields.Many2one('app_demo.tai_khoan_quan_ly', string='Tài khoản')
+    id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', string='Tài khoản')
     so_tien = fields.Float('Số tiền')
     ngay_thuc_hien = fields.Datetime('Ngày thực hiện')
-    hinh_thuc = fields.Many2one('app_demo.danh_sach_hinh_thuc', 'Hình Thức', index=True, ondelete="set null")
+    hinh_thuc = fields.Many2one('expenditure.danh_sach_hinh_thuc', 'Hình Thức', index=True, ondelete="set null")
     nguyen_nhan = fields.Text('Nguyên nhân')
     hinh_anh = fields.Binary(attachment=True, string='Hình ảnh')
     hinh_anh_phu = fields.Binary(attachment=True, string='Hình ảnh phụ', required=False)

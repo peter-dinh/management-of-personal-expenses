@@ -1,11 +1,14 @@
 <odoo>
   <data>
 
-    <menuitem name="app_demo" id="app_demo.menu_root" />
+    <menuitem 
+      name="Expenditure" 
+      id="expenditure.menu_root" 
+      web_icon="expenditure,static/src/img/ion.jpg"/>
 
-    <record model="ir.ui.view" id="app_demo.hinh_thuc_tree">
-      <field name="name">app_demo list</field>
-      <field name="model">app_demo.danh_sach_hinh_thuc</field>
+    <record model="ir.ui.view" id="expenditure.hinh_thuc_tree">
+      <field name="name">Danh sách hình thức</field>
+      <field name="model">expenditure.danh_sach_hinh_thuc</field>
       <field name="arch" type="xml">
         <tree>
           <field name="ten_hinh_thuc"/>
@@ -14,9 +17,9 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="app_demo.tai_khoan_tree">
-      <field name="name">Danh sach tai khoan</field>
-      <field name="model">app_demo.tai_khoan_quan_ly</field>
+    <record model="ir.ui.view" id="expenditure.tai_khoan_tree">
+      <field name="name">Danh sách tài khoản</field>
+      <field name="model">expenditure.tai_khoan_quan_ly</field>
       <field name="arch" type="xml">
         <tree>
           <field name="user_id"/>
@@ -25,9 +28,9 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="app_demo.tai_khoan_kanban">
-      <field name="name">Danh sach tai khoan Kanban</field>
-      <field name="model">app_demo.tai_khoan_quan_ly</field>
+    <record model="ir.ui.view" id="expenditure.tai_khoan_kanban">
+      <field name="name">Danh sách tài khoản</field>
+      <field name="model">expenditure.tai_khoan_quan_ly</field>
       <field name="arch" type="xml">
         <kanban>
           <templates>
@@ -58,54 +61,55 @@
     </record>
 
     
-    <record model="ir.actions.act_window" id="app_demo.act_window_taikhoan">
+    <record model="ir.actions.act_window" id="expenditure.act_window_taikhoan">
       <field name="name">Quản lý tài khoản</field>
-      <field name="res_model">app_demo.tai_khoan_quan_ly</field>
+      <field name="res_model">expenditure.tai_khoan_quan_ly</field>
       <field name="view_mode">kanban,tree,form</field>
     </record>
 
-    <menuitem name="Tai khoan" id="app_demo.menu_1" parent="app_demo.menu_root" action="app_demo.act_window_taikhoan"/>
+    <menuitem name="Tài Khoản" id="expenditure.tai_khoan" parent="expenditure.menu_root" action="expenditure.act_window_taikhoan" sequence="10"/>
 
-
-    <record model="ir.ui.view" id="app_demo.danh_sach_thu_chi_tree">
+    <record model="ir.ui.view" id="expenditure.danh_sach_thu_chi_tree">
       <field name="name">Danh sách thu chi</field>
-      <field name="model">app_demo.danh_sach_thu_chi</field>
+      <field name="model">expenditure.danh_sach_thu_chi</field>
       <field name="arch" type="xml">
         <tree>
           <field name="id_tai_khoan"/>
           <field name="so_tien"/>
           <field name="hinh_thuc"/>
+          <field name="ngay_thuc_hien" />
         </tree>
       </field>
     </record>
 
-    <record model="ir.actions.act_window" id="app_demo.action_window_thu_chi">
+    <record model="ir.actions.act_window" id="expenditure.action_window_thu_chi">
       <field name="name">Quản lý thu chi</field>
-      <field name="res_model">app_demo.danh_sach_thu_chi</field>
+      <field name="res_model">expenditure.danh_sach_thu_chi</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Thu chi" id="app_demo.thu_chi" parent="app_demo.menu_root" action="app_demo.action_window_thu_chi"/>
+    <menuitem name="Thu Chi" id="expenditure.thu_chi" parent="expenditure.menu_root" action="expenditure.action_window_thu_chi" sequence="100"/>
 
-    <record model="ir.ui.view" id="app_demo.danh_sach_vay_tree">
+    <record model="ir.ui.view" id="expenditure.danh_sach_vay_tree">
       <field name="name">Danh sách các khoản vay</field>
-      <field name="model">app_demo.danh_sach_cac_khoan_vay</field>
+      <field name="model">expenditure.danh_sach_cac_khoan_vay</field>
       <field name="arch" type="xml">
         <tree>
           <field name="id_tai_khoan"/>
           <field name="so_tien"/>
           <field name="loai_hinh_thuc"/>
+          <field name="ngay_thuc_hien"/>
         </tree>        
       </field>
     </record>
 
-    <record model="ir.actions.act_window" id="app_demo.action_window_no">
-      <field name="name">Quản lý nợ</field>
-      <field name="res_model">app_demo.danh_sach_cac_khoan_vay</field>
+    <record model="ir.actions.act_window" id="expenditure.action_window_no">
+      <field name="name">Quản lý vay nợ</field>
+      <field name="res_model">expenditure.danh_sach_cac_khoan_vay</field>
       <field name="view_mode">tree,form</field>
     </record>
     
-    <menuitem name="No" id="app_demo.no" parent="app_demo.menu_root" action="app_demo.action_window_no"/>
+    <menuitem name="Vay nợ" id="expenditure.no" parent="expenditure.menu_root" action="expenditure.action_window_no" sequence="1000"/>
     
    
   </data>
