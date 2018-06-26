@@ -24,11 +24,23 @@ class danh_sach_hinh_thuc(models.Model):
             else:
                 rec.mota = str(rec.ten_hinh_thuc) + ' - Nope'
 
+
+class tai_khoan_ngan_hang(models.Model):
+    _name = 'expenditure.tai_khoan_ngan_hang'
+    _rec_name = 'ngan_hang'
+
+    ngan_hang = fields.Char('Tên ngân hàng')
+    ten_chu_the = fields.Char('Tên chủ thẻ')
+    so_tai_khoan = fields.Char('Số tài khoản')
+
+
 class tai_khoan_quan_ly(models.Model):
     _name = 'expenditure.tai_khoan_quan_ly'
     _rec_name = 'user_id'
+    _inherits = {'expenditure.tai_khoan_ngan_hang' : 'id_tai_khoan_ngan_hang',}
 
     user_id = fields.Many2one('res.users', string='Người thực hiện', default=lambda self: self.env.user)
+    id_tai_khoan_ngan_hang = fields.Many2one('expenditure.tai_khoan_ngan_hang', string="Tài khoản ngân hàng", required=True, ondelete='cascade')
     so_du_tai_khoan = fields.Float(string='Số dư', compute="_get_so_du_tai_khoan")
     so_khoan_thu = fields.Integer(string='Số khoản thu', store=False,readonly=True)
     so_khoan_chi = fields.Integer(string='Số khoản chi', store=False, readonly=True)
@@ -81,7 +93,7 @@ class danh_sach_cac_khoan_vay(models.Model):
     _rec_name = 'id_tai_khoan'
     _order = 'ngay_thuc_hien DESC'
 
-    id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', string='Tài khoản' )
+    id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', required=True, string='Tài khoản' )
     so_tien = fields.Float('Số tiền')
     ngay_thuc_hien = fields.Datetime('Ngày thực hiện')
     doi_tac = fields.Char(string='Đối tác')
@@ -107,7 +119,7 @@ class danh_sach_thu_chi(models.Model):
     _description = 'cac khoa chi tieu ca nhan'
     _order = 'ngay_thuc_hien DESC'
 
-    id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', string='Tài khoản')
+    id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', required=True, string='Tài khoản')
     so_tien = fields.Float('Số tiền')
     ngay_thuc_hien = fields.Datetime('Ngày thực hiện')
     hinh_thuc = fields.Many2one('expenditure.danh_sach_hinh_thuc', 'Hình Thức', index=True, ondelete="set null")

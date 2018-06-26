@@ -60,6 +60,20 @@
       </field>
     </record>
 
+    <record id="expenditure.tai_khoan_form" model="ir.ui.view">
+      <field name="name">Quản lý tài khoản</field>
+      <field name="model">expenditure.tai_khoan_quan_ly</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group string="Chọn tài khoản quản lý">
+              <field name="user_id" />
+              <field name="id_tai_khoan_ngan_hang" />
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
     
     <record model="ir.actions.act_window" id="expenditure.act_window_taikhoan">
       <field name="name">Quản lý tài khoản</field>
@@ -82,10 +96,69 @@
       </field>
     </record>
 
+    <record model="ir.ui.view" id="expenditure.danh_sach_thu_chi_form">
+      <field name="name">Danh sách thu chi</field>
+      <field name="model">expenditure.danh_sach_thu_chi</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group string="Thông tin">
+              <group >
+                  <field name="id_tai_khoan" />
+                  <field name="so_tien" />
+                  <field name="ngay_thuc_hien"  />
+              </group>
+              <group >
+                  <field name="nguyen_nhan" />
+                  <field name="hinh_thuc"  />
+              </group>
+            </group>
+
+            <group string="Hình ảnh">
+              <div>
+                <field name="hinh_anh" class="oe_avatar" widget="image"/>
+              </div>
+              <div>
+                <field name="hinh_anh_phu" class="oe_avatar" widget="image" />
+              </div>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="expenditure.danh_sach_thu_chi_search" model="ir.ui.view">
+      <field name="name">Tìm kiếm danh sách thu chi</field>
+      <field name="model">expenditure.danh_sach_thu_chi</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="id_tai_khoan" />
+          <filter name="Phiếu thu" domain="[('hinh_thuc.loai_hinh_thuc', '=', '1')]"/>
+          <filter name="Phiếu chi" domain="[('hinh_thuc.loai_hinh_thuc','=','2')]"/>
+          <group expand='0' string="Nhóm">
+            <filter string="Theo tuần" 
+            domain="" 
+            context="{'group_by': 'ngay_thuc_hien'}" />
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <!-- <record id="expenditure.danh_sach_thu_chi_calendar">
+      <field name="name">Danh sách thu chi</field>
+      <field name="model">expenditure.danh_sach_thu_chi</field>
+      <field name="arch" type="xml">
+        <calendar>
+
+        </calender>
+      </field>
+    </record> -->
+
     <record model="ir.actions.act_window" id="expenditure.action_window_thu_chi">
       <field name="name">Quản lý thu chi</field>
       <field name="res_model">expenditure.danh_sach_thu_chi</field>
       <field name="view_mode">tree,form</field>
+      <field name="search_view_id" ref="danh_sach_thu_chi_search" />
     </record>
 
     <menuitem name="Thu Chi" id="expenditure.thu_chi" parent="expenditure.menu_root" action="expenditure.action_window_thu_chi" sequence="100"/>

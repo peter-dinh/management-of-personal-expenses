@@ -3,15 +3,14 @@
     'name': "Expenditure",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Management Expenditure """,
 
     'description': """
         Long description of module's purpose
     """,
 
     'author': "Peter Dinh",
-    'website': "http://www.yourcompany.com",
+    'website': "https://github.com/peter-dinh",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
