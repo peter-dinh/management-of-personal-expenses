@@ -69,6 +69,7 @@
             <group string="Chọn tài khoản quản lý">
               <field name="user_id" />
               <field name="id_tai_khoan_ngan_hang" />
+              <field name="so_dien_thoai" icon="label_icon_phone"  widget="custom_phone"/>
             </group>
           </sheet>
         </form>
@@ -171,7 +172,7 @@
           <field name="id_tai_khoan"/>
           <field name="so_tien"/>
           <field name="loai_hinh_thuc"/>
-          <field name="ngay_thuc_hien"/>
+          <field name="ngay_thuc_hien" />
         </tree>        
       </field>
     </record>

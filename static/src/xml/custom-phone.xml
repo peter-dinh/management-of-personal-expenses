@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <div t-name="custom-phone.template">
+        <a style='margin-left:10px;' href='tel:" + this.value + "'><span class='fa fa-phone'></span></a>
+    </div>
+</templates>

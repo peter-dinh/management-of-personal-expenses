@@ -18,5 +18,12 @@
         <!--     </t> -->
         <!--   </dl> -->
         <!-- </template> -->
+        <template id="phone_custom" inherit_id="web.assets_backend">
+            
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/expenditure/static/src/js/custom-phone.js"></script>
+            </xpath>
+            
+        </template>
     </data>
 </odoo>

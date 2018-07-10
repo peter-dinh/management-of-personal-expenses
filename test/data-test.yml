@@ -1,0 +1,12 @@
+-
+  TestL Tai khoan
+-
+  !context
+    uid: 'base.user_demo'
+-
+  create 
+-
+  !record {model: expenditure.danh_sach_hinh_thuc, id: test_tai_khoan}:
+    - ten_hinh_thuc: Test hinh thuc
+    - loai_hinh_thuc: ho moi
+-

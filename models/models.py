@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+from datetime import timedelta
 
 class danh_sach_hinh_thuc(models.Model):
     _name = 'expenditure.danh_sach_hinh_thuc'
@@ -33,24 +33,51 @@ class tai_khoan_ngan_hang(models.Model):
     ten_chu_the = fields.Char('Tên chủ thẻ')
     so_tai_khoan = fields.Char('Số tài khoản')
 
+class PartnerXlsx(models.AbstractModel):
+    _name = 'report.report_xlsx.account'
+    _inherit = 'report.report_xlsx.abstract'
+
+    def generate_xlsx_report(self, workbook, data, partners):
+        #print (partners)
+        sheet = workbook.add_worksheet('data_one_record')
+        bold = workbook.add_format({'bold': True})
+        sheet.write('A1', 'User ID', bold)
+        sheet.write('B1', 'Bank ID', bold)
+        sheet.write('C1', 'So du', bold)
+        sheet.write('D1', 'So khoan thu', bold)
+        sheet.write('E1', 'So khoan chi', bold)
+        sheet.write('F1', 'So khoan no', bold)
+        sheet.write('G1', 'So khoan cho no', bold)
+
+        row = 1
+        for obj in partners:
+            sheet.write(row, 0, obj.user_id.id)
+            sheet.write(row, 1, obj.id_tai_khoan_ngan_hang.id)
+            sheet.write(row, 2, obj.so_du_tai_khoan)
+            sheet.write(row, 3, obj.so_khoan_thu)
+            sheet.write(row, 4, obj.so_khoan_chi)
+            sheet.write(row, 5, obj.so_khoan_no)
+            sheet.write(row, 6, obj.so_khoan_cho_no)
+            row = row + 1 
 
 class tai_khoan_quan_ly(models.Model):
     _name = 'expenditure.tai_khoan_quan_ly'
     _rec_name = 'user_id'
     _inherits = {'expenditure.tai_khoan_ngan_hang' : 'id_tai_khoan_ngan_hang',}
 
-    user_id = fields.Many2one('res.users', string='Người thực hiện', default=lambda self: self.env.user)
+
+    user_id = fields.Many2one('res.partner', string='Người thực hiện', default=lambda self: self.env.user)
     id_tai_khoan_ngan_hang = fields.Many2one('expenditure.tai_khoan_ngan_hang', string="Tài khoản ngân hàng", required=True, ondelete='cascade')
     so_du_tai_khoan = fields.Float(string='Số dư', compute="_get_so_du_tai_khoan")
     so_khoan_thu = fields.Integer(string='Số khoản thu', store=False,readonly=True)
     so_khoan_chi = fields.Integer(string='Số khoản chi', store=False, readonly=True)
     so_khoan_no = fields.Integer(string='Số khoản nợ', store=False, readonly=True)
     so_khoan_cho_no = fields.Integer(string='Số khoản cho nợ', store=False, readonly=True)
+    so_dien_thoai = fields.Char(string="Số điện thoại")
 
     _sql_constraints = [
         ('user_id_unique', 'unique (user_id)', "Người dùng đã tồn tại !")
     ]
-
 
     @api.multi
     def _get_so_du_tai_khoan(self):
@@ -95,7 +122,7 @@ class danh_sach_cac_khoan_vay(models.Model):
 
     id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', required=True, string='Tài khoản' )
     so_tien = fields.Float('Số tiền')
-    ngay_thuc_hien = fields.Datetime('Ngày thực hiện')
+    ngay_thuc_hien = fields.Datetime('Ngày thực hiện', required=True)
     doi_tac = fields.Char(string='Đối tác')
     nguyen_nhan = fields.Text('Nguyên nhân')
     da_tra = fields.Boolean('Đã trả', default=False)
@@ -103,6 +130,10 @@ class danh_sach_cac_khoan_vay(models.Model):
     hinh_anh = fields.Binary(attachment=True, string='Hình ảnh')
     hinh_anh_phu = fields.Binary(attachment=True, string='Hình ảnh phụ', required=False)
     
+    def do_da_tra(self):
+        for item in self:
+            item.da_tra = not item.da_tra
+
     # lambda self: 5
 
     # def print_5(self):
@@ -110,8 +141,25 @@ class danh_sach_cac_khoan_vay(models.Model):
     # @api.multi
     # def _update_so_khoan_vay(self):
     #     self.id_tai_khoan.print_5
-        
+    
+    @api.onchange('ngay_thuc_hien')
+    def on_change_date_end(self):
+        print('bac')
+        return {
+            'warning': {
+                'title': 'expired membership',
+                'message': "Membership has expired",
+            },
+        }
 
+    @api.constrains('ngay_thuc_hien')
+    def _check_ngay_thuc_hien(self):
+        for item in self:
+            if item.ngay_thuc_hien == False:
+                raise models.ValidationError('Ngay thuc hien khong duoc de trong!')
+            else:
+                if item.ngay_thuc_hien > fields.Date.today():
+                    raise models.ValidationError('Ngay thuc hien khong duoc lon hon thoi diem hien tai!')
     
 class danh_sach_thu_chi(models.Model):
     _name = 'expenditure.danh_sach_thu_chi'
@@ -121,8 +169,25 @@ class danh_sach_thu_chi(models.Model):
 
     id_tai_khoan = fields.Many2one('expenditure.tai_khoan_quan_ly', required=True, string='Tài khoản')
     so_tien = fields.Float('Số tiền')
-    ngay_thuc_hien = fields.Datetime('Ngày thực hiện')
+    ngay_thuc_hien = fields.Datetime('Ngày thực hiện', search='_search_date', required=True)
     hinh_thuc = fields.Many2one('expenditure.danh_sach_hinh_thuc', 'Hình Thức', index=True, ondelete="set null")
     nguyen_nhan = fields.Text('Nguyên nhân')
     hinh_anh = fields.Binary(attachment=True, string='Hình ảnh')
     hinh_anh_phu = fields.Binary(attachment=True, string='Hình ảnh phụ', required=False)
+
+    def _search_date(self, operator, value):
+        today = fields.Date.from_string(fields.Date.today())
+        print(fields.Date.today())
+        print(today)
+        value_day = timedeltai(days=value)
+        value_date = fields.Date.to_string(today - value_date)
+        return [('ngay_thuc_hien', operator, value_date)]
+
+    @api.constrains('ngay_thuc_hien')
+    def _check_ngay_thuc_hien(self):
+        for item in self:
+            if item.ngay_thuc_hien == False:
+                raise models.ValidationError('Ngay thuc hien khong duoc de trong!')
+            else:
+                if item.ngay_thuc_hien > fields.Date.today():
+                    raise models.ValidationError('Ngay thuc hien khong duoc lon hon thoi diem hien tai!')
